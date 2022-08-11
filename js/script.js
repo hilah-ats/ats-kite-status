@@ -1,4 +1,4 @@
-import { getKiteStatus } from '/js/kite-status.js';
+import { getKiteStatus } from 'https://raw.githubusercontent.com/hilah-ats/ats-kite-status/main/js/kite-status.js';
 
 const appName = new URLSearchParams(window.location.search).get('app');
 const url = 'https://api.jsonbin.io/v3/b/62f2cfe1a1610e6386f65cc3';
