@@ -1,2 +1,2 @@
 # ats-kite-status
-frontend app for displaying the status of kite applications
+front-end app for displaying the status of kite applications
