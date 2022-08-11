@@ -5,7 +5,7 @@ const url = 'https://api.jsonbin.io/v3/b/62f2cfe1a1610e6386f65cc3';
 const access_key = '$2b$10$6RgpMEbghA7.7cicWmuERexqTIV4v3tJKAbDzCAzHPiz57db9Vb.S';
 
 const status = getKiteStatus({url: url,options: {method: 'GET', headers: {'X-ACCESS-KEY': access_key}}});
-const template = fetch('/templates/status.handlebars').then(response => {return response.text()});
+const template = fetch('https://raw.githubusercontent.com/hilah-ats/ats-kite-status/main/templates/status.handlebars').then(response => {return response.text()});
 
 Promise.all([status, template]).then(values => {
     
