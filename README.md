@@ -64,7 +64,7 @@ At the beginning of the JSON there is a value that defines when the first day of
 ```json
 {
   "startDate": "08/01",
-... }
+}
 ```
 
 
@@ -78,7 +78,7 @@ Each Kite application in the JSON file has a set of specific fields associated w
     "type": 0,
     "alert": {
       "date": "2022/03/31, 9:00 AM",
-      "message": ""
+      "message": "Example alert message!"
     }
   },
   "outages": [
@@ -137,9 +137,9 @@ To update the status of an application, change the **type** value in the **statu
   "name": "Student Portal",
   "status": {
     "type": 0, <------------ Change this value.
-    "alert": { ... }
+    "alert": { }
   },
-  "outages": [ ... ]
+  "outages": [ ]
 }
 ```
 ### Message Updates
@@ -163,7 +163,7 @@ Keep in mind that:
       "message": "Example alert message!" <--- The text displayed.
     }
   },
-  "outages": [ ... ]
+  "outages": [ ]
 },
 ```
 
@@ -174,12 +174,12 @@ To report a new outage for an application, create a new outage item  in the **ou
 ```json
 {
   "name": "Student Portal",
-  "status": { ... },
+  "status": { },
   "outages": [
     {
       "date": "2022/05/11",
       "downtime": 33
-    },
+    }, <---------------------Do not forget the comma between entries!
     {
       "date": "2022/03/31",
       "downtime": 17
@@ -196,4 +196,4 @@ To report a new outage for an application, create a new outage item  in the **ou
  - [ ] Status alert bar not included.
 
 # Issues⚠️
- - Slow load time.
+ - Slow load time (due to application being ran solely on the front-end).
