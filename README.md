@@ -1,4 +1,4 @@
-# Kite System Status (Front-End)
+# Kite System Status
 
 A front-end web app hosted on [GitHub Pages](https://pages.github.com) that displays the current status of Kite Suite applications for use as an iframe on ATS managed websites.
 
@@ -196,4 +196,4 @@ To report a new outage for an application, create a new outage item  in the **ou
  - [ ] Status alert bar not included.
 
 # Issues⚠️
- - Slow load time (due to application being ran solely on the front-end).
+ - Slow load time (due to application being ran client-side. I have developed a full-stack version of this app, but currently have nowhere to host it 😢 ).
