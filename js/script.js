@@ -1,9 +1,15 @@
-const appName = new URLSearchParams(window.location.search).get('app');
-const url = 'https://api.jsonbin.io/v3/b/62f2cfe1a1610e6386f65cc3';
-const access_key = '$2b$10$6RgpMEbghA7.7cicWmuERexqTIV4v3tJKAbDzCAzHPiz57db9Vb.S';
+const params = new URLSearchParams(window.location.search);
+const url = 'https://api.jsonbin.io/v3/b/62f6b760e13e6063dc77e5b8';
+const access_key = '$2b$10$e/nVPQl40326F.HmD0k.T.5E7w5Hfoe0zAYhZpAqyc3dvCh8fVKxi';
+
+if(params.get('app') == 'Alert Bar') {
+    document.getElementById('loading').remove();
+}
 
 const status = getKiteStatus({url: url,options: {method: 'GET', headers: {'X-ACCESS-KEY': access_key}}});
-const template = fetch('https://raw.githubusercontent.com/hilah-ats/ats-kite-status/main/templates/status.handlebars').then(response => {return response.text()});
+const template = (params.get('app') == 'Alert Bar') 
+    ? fetch('https://raw.githubusercontent.com/hilah-ats/ats-kite-status/main/templates/bar.handlebars').then(response => {return response.text()}) : 
+      fetch('https://raw.githubusercontent.com/hilah-ats/ats-kite-status/main/templates/status.handlebars').then(response => {return response.text()});
 
 Promise.all([status, template]).then(values => {
     
@@ -11,11 +17,18 @@ Promise.all([status, template]).then(values => {
     const template = Handlebars.compile(values[1]);
     
     if(status.ok) {
-       document.getElementById('kite').innerHTML = template(status.applications.find(app => {return app.name === appName}));     
+        if(params.get('app') == 'Alert Bar') {
+            console.log(status);
+            
+            document.getElementById('kite').innerHTML = template(status.alert);               
+        } else {
+            document.getElementById('kite').innerHTML = template(status.applications.find(app => {return app.name === params.get('app')}));             
+        }
+       
     } else {
-        status.name = appName;
+        status.name = params.get('app');
         document.getElementById('kite').innerHTML = template(status); 
-        document.getElementById('outage-message').innerHTML += `<code class="p-2 mt-3 d-block">${status.status.error.message}</code>`
+
     }
     
     
@@ -94,6 +107,10 @@ function parseStatus(status) {
 
         app.status.alert.display = (app.status.type != 0) ? "block" : "none";
         app.status.alert.date = new Date(app.status.alert.date).toLocaleString("en-US", { month: "long", day: "numeric", hour:"numeric", minute: "numeric"});
+        
+        app.status.error = {
+            "display": 'none'
+        };
     });        
 
     return status;
@@ -109,7 +126,7 @@ function parseError(error) {
             icon: '\uF506',
             alert: {
                 display: 'block',
-                message: 'The current status of the Kite Suite cannot be reached. Please contact aaiwebmaster@ku.edu with the following error code to resolve this issue.',
+                message: '',
             },
             error: {
                 display: 'block', 

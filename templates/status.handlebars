@@ -15,6 +15,11 @@
                 <div class="p-3">
                    <span class="fw-bold" id="outage-date">{{status.alert.date}}</span>
                    <div id="outage-message">{{status.alert.message}}</div>
+                    <div>
+                        <div>The current status of the Kite Suite cannot be reached. Please contact <a class="text-light" href="mailto:aaiwebmaster@ku.edu">aaiwebmaster@ku.edu</a> with the following error code to resolve this issue.</div>
+                        <code class="p-2 mt-3 d-{{status.error.display}}">{{status.error.message}}</code>
+                    </div>
+                    
                 </div>
              </div>
           </div>

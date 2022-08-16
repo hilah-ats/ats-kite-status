@@ -18,7 +18,7 @@ code {
 
 #kite_alert_container {
 	max-height: 0px;
-	overflow: hidden;
+/*	overflow: hidden;*/
 	transition: max-height 1s ease-out;
 }
 
@@ -28,6 +28,11 @@ code {
 
 .alert-appear {
 	max-height: 200px !important;
+}
+
+#alert-bar {
+	background: #DD1E36;
+	color: white;    
 }
 
 .alert-danger {
