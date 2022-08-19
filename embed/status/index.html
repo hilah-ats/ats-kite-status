@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Kite System Status</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">  
+    <link href="../../style.css" rel="stylesheet">  
+  </head>
+  <body>
+      
+    <div id="kite">
+    
+        <div id="loading" class="loading d-flex flex-column justify-content-center align-items-center w-100">
+            <div class="spinner-border text-secondary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>            
+        </div>
+    
+        <script id="template" type="text/x-handlebars-template">        
+            <div class="gx-0 p-4 application">
+               <h2 class="mb-5 mx-auto text-center">
+                   <span class="fw-bolder">Kite</span> <img class="mb-1" height="25" src="https://raw.githubusercontent.com/hilah-ats/ats-kite-status/main/favicon.svg" alt="kite logo" /> {{name}} 
+               </h2>
+               <div class="row gx-0">
+                  <div class="" id="appStatus">
+                     <h5 class="fw-bold">Current Status:</h5>
+                     <div class="current-status mb-2 pl-3">
+                        <div class="p-2 text-center status-{{status.type}}" id="status">{{status.message}}<span>{{status.icon}}</span></div>
+                     </div>
+                     <i>
+                        <p class="" id="updated">Last Updated: {{lastRefresh}}</p>
+                     </i>
+                     <div  class="mb-4 d-{{status.alert.display}}" id="outage">
+                        <div class="p-3">
+                           <span class="fw-bold" id="outage-date">{{status.alert.date}}</span>
+                           <div id="outage-message">{{status.alert.message}}</div>
+                            <div>
+                                <div>The current status of the Kite Suite cannot be reached. Please contact <a class="text-light" href="mailto:aaiwebmaster@ku.edu">aaiwebmaster@ku.edu</a> with the following error code to resolve this issue.</div>
+                                <code class="p-2 mt-3 d-{{status.error.display}}">{{status.error.message}}</code>
+                            </div>
+
+                        </div>
+                     </div>
+                  </div>
+                  <div class="d-{{uptime.display}}" id="appUptime">
+                     <hr class="" />
+                     <div class="text-center mb-5">
+                        <h5 class="fw-bold">Application Uptime</h5>
+                        <i>
+                           <p class="text-center" id="upSince">{{schoolYear}} School Year</p>
+                        </i>
+                     </div>
+                     <div class="uptime-graph d-block mx-auto text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 36 36">
+                           <circle cx="16" cy="16" r="15.9155" class="progress-bar__background" />
+                           <circle cx="16" cy="16" r="15.9155" id="progressBar" style="stroke-dashoffset:{{uptime.graphOffset}};" class="progress-bar__progress js-progress-bar" />
+                        </svg>
+                        <div class="uptime-percent text-center display-2 m-3">
+                           <span id="uptimeInt">{{uptime.int}}</span><span id="uptimeDec">{{uptime.dec}}</span>
+                        </div>
+                     </div>
+                  </div>
+                </div>
+            </div>        
+        </script>  
+        
+    </div>
+      
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js" integrity="sha512-RNLkV3d+aLtfcpEyFG8jRbnWHxUqVZozacROI4J2F1sTaDqo1dPQYs01OMi1t1w9Y2FdbSCDSQ2ZVdAC8bzgAg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>       
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.3.2/iframeResizer.contentWindow.min.js" integrity="sha512-14SY6teTzhrLWeL55Q4uCyxr6GQOxF3pEoMxo2mBxXwPRikdMtzKMYWy2B5Lqjr6PHHoGOxZgPaxUYKQrSmu0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="script.js" type="module"></script>
+      
+  </body>
+</html>

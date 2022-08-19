@@ -1,6 +1,9 @@
+const url = 'https://api.jsonbin.io/v3/b/62f6b760e13e6063dc77e5b8';
+const options = {method: 'GET', headers: {'X-ACCESS-KEY': '$2b$10$e/nVPQl40326F.HmD0k.T.5E7w5Hfoe0zAYhZpAqyc3dvCh8fVKxi'}}
+
 export function getKiteStatus(params) {
     
-    const status = fetchStatus(params.url, params.options).then(json => {
+    const status = fetchStatus(url, options).then(json => {
         
         if(json.ok) { return parseStatus(json.data) }
 
@@ -71,6 +74,10 @@ function parseStatus(status) {
 
         app.status.alert.display = (app.status.type != 0) ? "block" : "none";
         app.status.alert.date = new Date(app.status.alert.date).toLocaleString("en-US", { month: "long", day: "numeric", hour:"numeric", minute: "numeric"});
+        
+        app.status.error = {
+            "display": 'none'
+        };
     });        
 
     return status;
@@ -86,7 +93,7 @@ function parseError(error) {
             icon: '\uF506',
             alert: {
                 display: 'block',
-                message: 'The current status of the Kite Suite cannot be reached. Please contact aaiwebmaster@ku.edu with the following error code to resolve this issue.',
+                message: '',
             },
             error: {
                 display: 'block', 
