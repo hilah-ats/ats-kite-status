@@ -32,7 +32,7 @@ function fetchStatus(url, options) {
                 console.log('\x1b[31m%s\x1b[0m', '[kite-status] Fetch Failed'); 
                 console.log('\x1b[31m%s\x1b[0m', '[kite-status] Tried to GET: ' + URL); 
                 console.error(error);   
-                return {ok: false, data: error};
+                return {parsed: false, data: error};
             }); 
     
     return json;
@@ -40,6 +40,9 @@ function fetchStatus(url, options) {
 }
 
 function parseStatus(status) {
+    
+    status.parsed = true;
+    status.ok = true;
     
     //  Get today's date.
     const now = new Date();
@@ -53,8 +56,11 @@ function parseStatus(status) {
         (now.getUTCMonth() >= start.getUTCMonth()) && (now.getUTCDate() >= start.getUTCDate()) ? 
             now.getFullYear() : now.getFullYear()-1);
     
-    status.ok = true;
     status.applications.forEach((app) => {
+        if (app.status.type !== 1) {
+            status.ok = false;
+        }
+        
         app.schoolYear = start.getFullYear() + " - " + ((start.getFullYear() + 1).toString().substr(-2));       
         app.lastRefresh = now.toLocaleString("en-US", { month: "long", day: "numeric", hour:"numeric", minute: "numeric"});
 
