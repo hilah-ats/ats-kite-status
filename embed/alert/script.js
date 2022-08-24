@@ -9,11 +9,15 @@ fetchStatus.then(res => {
     
     const status = res;
     
-    if(status.parsed && status.ok) {
+    if(status.parsed && !status.ok) {
         status.alert.link = params.get('link');
         document.getElementById('kite').innerHTML = template(status.alert);      
+        window.parentIFrame.sendMessage({loaded: true});
     } else {
-        if ('parentIFrame' in window) {window.parentIFrame.close();}
+        if ('parentIFrame' in window) {
+            
+            window.parentIFrame.close();
+        }
     }
     
 });
