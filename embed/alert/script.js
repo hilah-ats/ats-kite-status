@@ -10,12 +10,19 @@ fetchStatus.then(res => {
     const status = res;
     
     if(status.parsed && !status.ok) {
+        
+        let element = document.getElementById('kite');
+        element.innerHTML = template(status.alert); 
         status.alert.link = params.get('link');
-        document.getElementById('kite').innerHTML = template(status.alert);      
-        window.parentIFrame.sendMessage({loaded: true});
+        
+        if ('parentIFrame' in window) { 
+            window.parentIFrame.sendMessage({loaded: true});
+            window.parentIFrame.autoResize(false);
+            window.parentIFrame.autoResize(true);
+        }        
+        
     } else {
         if ('parentIFrame' in window) {
-            
             window.parentIFrame.close();
         }
     }
