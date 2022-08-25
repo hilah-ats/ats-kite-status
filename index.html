@@ -31,8 +31,10 @@
     var options = {
         log: false,
         autoResize: true,
-        onMessage: function (messageData) {
+        onMessage: function (msg) {
             document.getElementById('alert').classList.remove('d-none');
+//            console.log(msg.iframe.iFrameResizer);
+            msg.iframe.iFrameResizer.resize();
         }
     }
     
