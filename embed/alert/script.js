@@ -16,8 +16,8 @@ fetchStatus.then(res => {
         status.alert.link = params.get('link');
         
         if ('parentIFrame' in window) { 
+            
             window.parentIFrame.sendMessage({loaded: true});
-            window.parentIFrame.resize();
         }        
         
     } else {
