@@ -33,7 +33,7 @@
         autoResize: true,
         onMessage: function (msg) {
             document.getElementById('alert').classList.remove('d-none');
-//            console.log(msg.iframe.iFrameResizer);
+            console.log(msg.iframe);
             msg.iframe.iFrameResizer.resize();
         }
     }
