@@ -17,8 +17,6 @@ fetchStatus.then(res => {
         
         if ('parentIFrame' in window) { 
             window.parentIFrame.sendMessage({loaded: true});
-            window.parentIFrame.autoResize(false);
-            window.parentIFrame.autoResize(true);
         }        
         
     } else {
