@@ -1,17 +1,17 @@
-const url = 'https://api.jsonbin.io/v3/b/62f6b760e13e6063dc77e5b8';
-const options = {method: 'GET', headers: {'X-ACCESS-KEY': '$2b$10$e/nVPQl40326F.HmD0k.T.5E7w5Hfoe0zAYhZpAqyc3dvCh8fVKxi'}}
-
-export function getKiteStatus(params) {
+export function getKiteStatus(bin) {
     
+    const url = `https://api.jsonbin.io/v3/b/${bin}`
+    const options = {method: 'GET', headers: {'X-ACCESS-KEY': '$2b$10$e/nVPQl40326F.HmD0k.T.5E7w5Hfoe0zAYhZpAqyc3dvCh8fVKxi'}}
+
     const status = fetchStatus(url, options).then(json => {
         
         if(json.ok) { return parseStatus(json.data) }
 
-        return parseError(json.data);        
+        return parseError(json.data)     
         
-    });
+    })
     
-    return status;
+    return status
     
 }
 
@@ -21,95 +21,116 @@ function fetchStatus(url, options) {
         fetch(url, options)
             .then((response) => {
                 if(!response.ok) {
-                    throw new Error('HTTP Bad Status ' + response.status);
+                    throw new Error('HTTP Bad Status ' + response.status)
                 }
-                return response.json();
+                return response.json()
             })
             .then((data) => {
-                return {ok: true, data: data.record};
+                return {ok: true, data: data.record}
             })
             .catch((error) => {
-                console.log('\x1b[31m%s\x1b[0m', '[kite-status] Fetch Failed'); 
-                console.log('\x1b[31m%s\x1b[0m', '[kite-status] Tried to GET: ' + URL); 
-                console.error(error);   
-                return {parsed: false, data: error};
+                console.log('\x1b[31m%s\x1b[0m', '[kite-status] Fetch Failed')
+                console.log('\x1b[31m%s\x1b[0m', '[kite-status] Tried to GET: ' + URL)
+                console.error(error)
+                return {parsed: false, data: error}
             }); 
     
-    return json;
+    return json
     
 }
 
 function parseStatus(status) {
-    
-    status.parsed = true;
-    status.ok = true;
-    
+
+    status.parsed = true
+    status.ok = true
+
     //  Get today's date.
-    const now = new Date();
+    const now = new Date()
+    const nowFormatted = now.toLocaleString("en-US", { month: "long", day: "numeric", hour:"numeric", minute: "numeric"})
 
     //  Create a new Date from startDay (year doesn't matter we just need the month and the day in a date object).
         
-    const start = new Date("2000/"+status.startDay);
+    const start = new Date("2000/"+status.startDay)
 
     //  Calculate the current school year based on today's date and the start date.
     start.setFullYear(
         (now.getUTCMonth() >= start.getUTCMonth()) && (now.getUTCDate() >= start.getUTCDate()) ? 
-            now.getFullYear() : now.getFullYear()-1);
+            now.getFullYear() : now.getFullYear()-1)
     
+    status.alert = {
+        "title": `Kite Status Alert: ${nowFormatted}`,
+        "apps": [],
+        "display": false
+    }
+
     status.applications.forEach((app) => {
-        if (app.status.type !== 1) {
-            status.ok = false;
+        if (app.state > 1) {
+            status.alert.display = true
+            status.alert.apps.push({
+                "name": `${app.name}`,
+                "contents":  `${status.states[app.state].name}`,
+                "icon": status.states[app.state].icon
+            })
         }
-        
-        app.schoolYear = start.getFullYear() + " - " + ((start.getFullYear() + 1).toString().substr(-2));       
-        app.lastRefresh = now.toLocaleString("en-US", { month: "long", day: "numeric", hour:"numeric", minute: "numeric"});
 
         // Calculate the uptime of the application based on outages.
-        const uptime = getUptime(app.outages, now, start);        
+        const uptime = getUptime(app.outages, now, start)       
 
         // Store uptime calculations processed for display.
         app.uptime = {
+            "schoolYear": start.getFullYear() + " - " + ((start.getFullYear() + 1).toString().substr(-2)),
             "int": (uptime.includes('.') ? uptime.split('.')[0] :uptime+"%"),
             "dec": (uptime.includes('.') ? '.'+uptime.split('.')[1]+'%' : ''),
             "graphOffset": (100 - ((parseInt(uptime)/100) * 100)),
-            "display": (app.status.type > 1) ? "none" : "block"
-        }; 
-
-        app.status.message = status.statusTypes[app.status.type].message;
-        app.status.icon = status.statusTypes[app.status.type].icon;  
-
-        app.status.alert.display = (app.status.type != 0) ? "block" : "none";
-        app.status.alert.date = new Date(app.status.alert.date).toLocaleString("en-US", { month: "long", day: "numeric", hour:"numeric", minute: "numeric"});
-        
-        app.status.error = {
-            "display": 'none'
+            "display": (app.state > 1) ? "none" : "block"
         };
-    });        
 
-    return status;
+        app.status = {
+            "name": status.states[app.state].name,
+            "icon": status.states[app.state].icon,
+            "lastUpdated": nowFormatted
+        }
+
+        app.message = {
+            "date": new Date(app.message.date).toLocaleString("en-US", { month: "long", day: "numeric", hour:"numeric", minute: "numeric"}),
+            "contents": (app.message.contents === "" ? 
+                status.states[app.state].message.replace("{application}", app.name) : 
+                app.message.contents
+            ),
+            "display": (app.state != 0) ? "block" : "none"
+        }
+        
+        app.error = {
+            "display": 'none'
+        }
+
+    })
+
+    console.log(status)
+    return status
 
 }
 
 function parseError(error) {
     
     return {
-        ok: false,
-        status: {
-            message: 'Unknown',
-            icon: '\uF506',
-            alert: {
-                display: 'block',
-                message: '',
-            },
-            error: {
-                display: 'block', 
-                message: error
-            }
+        "ok": false,
+        "uptime": {
+            "display": 'none'
+        },      
+        "status": {
+            "name": 'Unknown',
+            "icon": '\uF506',
+            "lastUpdated": new Date().toLocaleString("en-US", { month: "long", day: "numeric", hour:"numeric", minute: "numeric"})            
         },
-        lastRefresh: new Date().toLocaleString("en-US", { month: "long", day: "numeric", hour:"numeric", minute: "numeric"}),
-        uptime: {
-            display: 'none'
-        }
+        "message": {
+            "display": 'block',
+            "contents": '',
+        },
+        "error": {
+            "display": 'block', 
+            "contents": error
+        }        
     }    
     
 }

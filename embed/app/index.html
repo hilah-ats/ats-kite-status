@@ -26,18 +26,18 @@
                   <div class="" id="appStatus">
                      <h5 class="fw-bold">Current Status:</h5>
                      <div class="current-status mb-2 pl-3">
-                        <div class="p-2 text-center status-{{status.type}}" id="status">{{status.message}}<span>{{status.icon}}</span></div>
+                        <div class="p-2 text-center status-{{state}}" id="status">{{status.name}}<i class="icon">{{status.icon}}</i></div>
                      </div>
                      <i>
-                        <p class="" id="updated">Last Updated: {{lastRefresh}}</p>
+                        <p class="" id="updated">Last Updated: {{status.lastUpdated}}</p>
                      </i>
-                     <div  class="mb-4 d-{{status.alert.display}}" id="outage">
+                     <div  class="mb-4 d-{{message.display}}" id="outage">
                         <div class="p-3">
-                           <span class="fw-bold" id="outage-date">{{status.alert.date}}</span>
-                           <div id="outage-message">{{status.alert.message}}</div>
-                            <div>
+                           <span class="fw-bold" id="outage-date">{{message.date}}</span>
+                           <div id="outage-message">{{message.contents}}</div>
+                            <div class="d-{{error.display}}">
                                 <div>The current status of the Kite Suite cannot be reached. Please contact <a class="text-light" href="mailto:aaiwebmaster@ku.edu">aaiwebmaster@ku.edu</a> with the following error code to resolve this issue.</div>
-                                <code class="p-2 mt-3 d-{{status.error.display}}">{{status.error.message}}</code>
+                                <code class="d-block p-2 mt-3">{{error.contents}}</code>
                             </div>
 
                         </div>
@@ -48,7 +48,7 @@
                      <div class="text-center mb-5">
                         <h5 class="fw-bold">Application Uptime</h5>
                         <i>
-                           <p class="text-center" id="upSince">{{schoolYear}} School Year</p>
+                           <p class="text-center" id="upSince">{{uptime.schoolYear}} School Year</p>
                         </i>
                      </div>
                      <div class="uptime-graph d-block mx-auto text-center">
