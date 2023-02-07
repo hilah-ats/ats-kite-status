@@ -60,12 +60,12 @@ function parseStatus(status) {
     status.alert = {
         "title": `Kite Status Alert: ${nowFormatted}`,
         "apps": [],
-        "display": false
+        "show": false
     }
 
     status.applications.forEach((app) => {
         if (app.state > 1) {
-            status.alert.display = true
+            status.alert.show = true
             status.alert.apps.push({
                 "name": `${app.name}`,
                 "contents":  `${status.states[app.state].name}`,
@@ -106,7 +106,6 @@ function parseStatus(status) {
 
     })
 
-    console.log(status)
     return status
 
 }

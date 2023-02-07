@@ -2,31 +2,27 @@ import { getKiteStatus } from '../../js/kite-status.js';
 
 const params = new URLSearchParams(window.location.search);
 
-const fetchStatus = getKiteStatus(params.get('bin'));
-const template = Handlebars.compile(document.getElementById('template').innerHTML);
+const status = getKiteStatus(params.get('bin'));
+const template = document.getElementById('template').innerHTML;
 
-fetchStatus.then(res => {
+Promise.all([status, template]).then(values => {
     
-    const status = res;
-    
-    if(status.parsed && status.alert.display) {
-        
+    const status = values[0];
+    const template = Handlebars.compile(values[1]);
+
+    if(status.parsed && status.alert.show) {
+
         let element = document.getElementById('kite');
-        element.innerHTML = template(status.alert); 
 
-        if(params.get('link')) {
-            status.alert.link = params.get('link');
-        }
+        status.alert.link = (params.get('link') ? params.get('link') : '/')
+
+        element.innerHTML = template(status.alert); 
         
-        if ('parentIFrame' in window) { 
-            window.parentIFrame.sendMessage({loaded: true});
-        }        
+        if ('parentIFrame' in window) { window.parentIFrame.sendMessage('loaded') }        
         
     } else {
-        if ('parentIFrame' in window) {
-            window.parentIFrame.close();
-        }
+        if ('parentIFrame' in window ) { window.parentIFrame.close() }
     }
-    
+
 });
 
