@@ -5,7 +5,7 @@ export function getKiteStatus(bin) {
 
     const status = fetchStatus(url, options).then(json => {
         
-        if(json.ok) { return parseStatus(json.data) }
+        if (json.ok) { return parseStatus(json.data) }
 
         return parseError(json.data)     
         
@@ -33,7 +33,7 @@ function fetchStatus(url, options) {
                 console.log('\x1b[31m%s\x1b[0m', '[kite-status] Tried to GET: ' + URL)
                 console.error(error)
                 return {parsed: false, data: error}
-            }); 
+            })
     
     return json
     
@@ -83,7 +83,7 @@ function parseStatus(status) {
             "dec": (uptime.includes('.') ? '.'+uptime.split('.')[1]+'%' : ''),
             "graphOffset": (100 - ((parseInt(uptime)/100) * 100)),
             "display": (app.state > 1) ? "none" : "block"
-        };
+        }
 
         app.status = {
             "name": status.states[app.state].name,
@@ -138,17 +138,17 @@ function parseError(error) {
 function getUptime(outages, now, start) {
     
     //  How long the application has been running.
-	var runtime = (now - start)/ 3600000;
+	var runtime = (now - start)/ 3600000
     
     //  Aggregate total outage time.
 	var downtime = outages.reduce(function(total, outage){
-		return total + outage.downtime;
-	}, 0)/60;
+		return total + outage.downtime
+	}, 0)/60
     
     //  How long the application has been down.
-	downtime = ((runtime-downtime)/runtime)*100;
+	downtime = ((runtime-downtime)/runtime)*100
     
     //  Return percantage of time the appliction has been up (trim to 2 decimal places without rounding).
-	return (Math.floor(downtime * 100) / 100).toFixed(2).replace(/[.,]00$/, "");
+	return (Math.floor(downtime * 100) / 100).toFixed(2).replace(/[.,]00$/, "")
     
 }
