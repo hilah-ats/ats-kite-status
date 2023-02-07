@@ -90,14 +90,14 @@ function parseStatus(status) {
             "icon": status.states[app.state].icon,
             "lastUpdated": nowFormatted
         }
-
+        
         app.message = {
             "date": new Date(app.message.date).toLocaleString("en-US", { month: "long", day: "numeric", hour:"numeric", minute: "numeric"}),
-            "contents": (app.message.contents === "" ? 
-                status.states[app.state].message.replace("{application}", app.name) : 
+            "contents": (app.message.contents === "" && app.state > 0 ? 
+                status.states[app.state].message.replace("{application}", app.name) :
                 app.message.contents
             ),
-            "display": (app.state != 0) ? "block" : "none"
+            "display": (app.state > 0) ? "block" : "none"
         }
         
         app.error = {
