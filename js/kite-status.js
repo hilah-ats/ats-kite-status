@@ -1,7 +1,7 @@
 export function getKiteStatus(bin) {
     
     const url = `https://api.jsonbin.io/v3/b/${bin}`
-    const options = {method: 'GET', headers: {'X-ACCESS-KEY': '$2b$10$e/nVPQl40326F.HmD0k.T.5E7w5Hfoe0zAYhZpAqyc3dvCh8fVKxi'}}
+    const options = {method: 'GET', headers: {'X-ACCESS-KEY': '$2b$10$/bE7o8ci2IcbK/f8ZjS0n.rjGCIAORv736FEpglq7qcfGJwu5vxIu'}}
 
     const status = fetchStatus(url, options).then(json => {
         
